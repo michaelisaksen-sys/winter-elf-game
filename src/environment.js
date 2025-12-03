@@ -163,10 +163,10 @@ export class Environment {
         cabin.receiveShadow = true;
         cabinGroup.add(cabin);
 
-        // Roof
+        // Roof (red/brown color visible)
         const roofGeometry = new THREE.ConeGeometry(4.5, 2.5, 4);
         const roofMaterial = new THREE.MeshStandardMaterial({
-            color: 0x654321,
+            color: 0x8b0000, // Darker red for better visibility
             roughness: 0.8,
         });
         const roof = new THREE.Mesh(roofGeometry, roofMaterial);
@@ -175,14 +175,14 @@ export class Environment {
         roof.castShadow = true;
         cabinGroup.add(roof);
 
-        // Snow on roof
-        const snowRoofGeometry = new THREE.ConeGeometry(4.6, 0.5, 4);
+        // Snow on roof (smaller radius to show red roof edges)
+        const snowRoofGeometry = new THREE.ConeGeometry(3.8, 0.6, 4);
         const snowMaterial = new THREE.MeshStandardMaterial({
             color: 0xffffff,
             roughness: 0.9,
         });
         const snowRoof = new THREE.Mesh(snowRoofGeometry, snowMaterial);
-        snowRoof.position.y = 6.5;
+        snowRoof.position.y = 6.55; // On top of roof
         snowRoof.rotation.y = Math.PI / 4;
         cabinGroup.add(snowRoof);
 
@@ -255,10 +255,10 @@ export class Environment {
         hut.receiveShadow = true;
         hutGroup.add(hut);
 
-        // Roof
+        // Roof (red/brown color visible)
         const roofGeometry = new THREE.ConeGeometry(3.2, 2, 4);
         const roofMaterial = new THREE.MeshStandardMaterial({
-            color: 0x8b4513,
+            color: 0x8b0000, // Darker red for better visibility
             roughness: 0.8,
         });
         const roof = new THREE.Mesh(roofGeometry, roofMaterial);
@@ -267,14 +267,14 @@ export class Environment {
         roof.castShadow = true;
         hutGroup.add(roof);
 
-        // Snow on roof
-        const snowRoofGeometry = new THREE.ConeGeometry(3.3, 0.4, 4);
+        // Snow on roof (smaller radius to show red roof edges)
+        const snowRoofGeometry = new THREE.ConeGeometry(2.7, 0.5, 4);
         const snowMaterial = new THREE.MeshStandardMaterial({
             color: 0xffffff,
             roughness: 0.9,
         });
         const snowRoof = new THREE.Mesh(snowRoofGeometry, snowMaterial);
-        snowRoof.position.y = 5;
+        snowRoof.position.y = 4.85; // On top of roof
         snowRoof.rotation.y = Math.PI / 4;
         hutGroup.add(snowRoof);
 
@@ -348,7 +348,7 @@ export class Environment {
         hutGroup.add(counter);
 
         // Create waffles on counter
-        this.createWaffles(hutGroup, 0, 0.85, 1.5);
+        this.createWaffles(hutGroup, 0, 0.85, 1.5, 15, 20);
 
         // Position the hut near the lake
         hutGroup.position.set(15, 0, 20);
@@ -356,7 +356,7 @@ export class Environment {
         this.scene.add(hutGroup);
     }
 
-    createWaffles(parentGroup, x, y, z) {
+    createWaffles(parentGroup, x, y, z, hutX, hutZ) {
         // Create a stack of 3 waffles
         for (let i = 0; i < 3; i++) {
             const waffleGroup = new THREE.Group();
@@ -390,12 +390,11 @@ export class Environment {
             waffleGroup.castShadow = true;
             parentGroup.add(waffleGroup);
 
-            // Store waffle position for interaction
-            const waffleWorldPos = new THREE.Vector3();
-            waffleWorldPos.set(
-                this.waffleHut ? 15 + x + (i - 1) * 0.5 : x + (i - 1) * 0.5,
+            // Store waffle position for interaction (world coordinates)
+            const waffleWorldPos = new THREE.Vector3(
+                hutX + x + (i - 1) * 0.5,
                 y + i * 0.12,
-                this.waffleHut ? 20 + z : z
+                hutZ + z
             );
             this.waffles.push({
                 mesh: waffleGroup,
