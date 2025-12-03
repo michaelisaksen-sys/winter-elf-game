@@ -4,7 +4,7 @@ export class Character {
     constructor(scene) {
         this.scene = scene;
         this.mesh = null;
-        this.position = new THREE.Vector3(0, 1, 0);
+        this.position = new THREE.Vector3(0, 0, 0);
         this.velocity = new THREE.Vector3();
         this.rotation = 0;
 
@@ -201,8 +201,8 @@ export class Character {
         this.position.z += this.velocity.z * delta;
 
         // Keep above ground
-        if (this.position.y < 1) {
-            this.position.y = 1;
+        if (this.position.y < 0) {
+            this.position.y = 0;
             this.velocity.y = 0;
             this.isGrounded = true;
             this.isJumping = false;
@@ -312,7 +312,7 @@ export class Character {
     }
 
     reset() {
-        this.position.set(0, 1, 0);
+        this.position.set(0, 0, 0);
         this.velocity.set(0, 0, 0);
         this.rotation = 0;
         this.isGrounded = true;

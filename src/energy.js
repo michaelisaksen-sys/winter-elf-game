@@ -4,8 +4,8 @@ export class EnergySystem {
 
         this.energy = 100;
         this.maxEnergy = 100;
-        this.depletionRate = 2; // Energy lost per second
-        this.sprintDepletionRate = 5;
+        this.depletionRate = 0.5; // Energy lost per second (lasts ~3 minutes)
+        this.sprintDepletionRate = 1.5; // Sprint depletion (lasts ~1 minute)
         this.porridgeRestoration = 50;
 
         this.lastEatTime = 0;

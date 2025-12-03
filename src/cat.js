@@ -4,7 +4,7 @@ export class Cat {
     constructor(scene) {
         this.scene = scene;
         this.mesh = null;
-        this.position = new THREE.Vector3(5, 0.5, 5);
+        this.position = new THREE.Vector3(5, 0, 5);
         this.rotation = 0;
 
         // Animation
@@ -247,7 +247,7 @@ export class Cat {
         // Place character next to cat
         character.position.set(
             this.position.x + 2,
-            1,
+            0,
             this.position.z
         );
     }
