@@ -29,6 +29,10 @@ export class CameraController {
         this.rotateSpeed = 0.003;
         this.zoomSpeed = 0.5;
 
+        // Keyboard rotation speeds
+        this.keyboardRotateSpeed = 2.0; // radians per second
+        this.keyboardZoomSpeed = 5.0;   // units per second
+
         this.init();
     }
 
@@ -67,7 +71,7 @@ export class CameraController {
         }
     }
 
-    update(delta) {
+    update(delta, controls) {
         // Apply stored mouse movement
         if (this.mouseMovementX !== 0 || this.mouseMovementY !== 0) {
             this.azimuthAngle -= this.mouseMovementX * this.rotateSpeed;
@@ -82,6 +86,49 @@ export class CameraController {
             // Reset movement
             this.mouseMovementX = 0;
             this.mouseMovementY = 0;
+        }
+
+        // Apply keyboard camera controls (WASD)
+        if (controls && controls.cameraKeys) {
+            const rotateAmount = this.keyboardRotateSpeed * delta;
+            const zoomAmount = this.keyboardZoomSpeed * delta;
+
+            // W/S for tilting camera up/down
+            if (controls.cameraKeys.up) {
+                this.polarAngle -= rotateAmount;
+            }
+            if (controls.cameraKeys.down) {
+                this.polarAngle += rotateAmount;
+            }
+
+            // A/D for rotating camera left/right
+            if (controls.cameraKeys.left) {
+                this.azimuthAngle += rotateAmount;
+            }
+            if (controls.cameraKeys.right) {
+                this.azimuthAngle -= rotateAmount;
+            }
+
+            // Q/R for zooming in/out
+            if (controls.cameraKeys.zoomIn) {
+                this.distance -= zoomAmount;
+            }
+            if (controls.cameraKeys.zoomOut) {
+                this.distance += zoomAmount;
+            }
+
+            // Clamp values
+            this.polarAngle = THREE.MathUtils.clamp(
+                this.polarAngle,
+                this.minPolarAngle,
+                this.maxPolarAngle
+            );
+
+            this.distance = THREE.MathUtils.clamp(
+                this.distance,
+                this.minDistance,
+                this.maxDistance
+            );
         }
 
         // Update camera position

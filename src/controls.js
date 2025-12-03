@@ -4,6 +4,7 @@ export class Controls {
     constructor(game) {
         this.game = game;
 
+        // Character movement keys (Arrow keys)
         this.keys = {
             forward: false,
             backward: false,
@@ -15,12 +16,17 @@ export class Controls {
             pause: false,
         };
 
-        this.interactCooldown = false;
+        // Camera control keys (WASD)
+        this.cameraKeys = {
+            up: false,      // W
+            down: false,    // S
+            left: false,    // A
+            right: false,   // D
+            zoomIn: false,  // Q
+            zoomOut: false, // E (moved interact to F)
+        };
 
-        // Mouse control
-        this.mouseX = 0;
-        this.mouseY = 0;
-        this.mouseSensitivity = 0.002;
+        this.interactCooldown = false;
 
         this.init();
     }
@@ -37,22 +43,35 @@ export class Controls {
 
     onKeyDown(event) {
         switch (event.code) {
-            case 'KeyW':
+            // Arrow keys for character movement
             case 'ArrowUp':
                 this.keys.forward = true;
                 break;
-            case 'KeyS':
             case 'ArrowDown':
                 this.keys.backward = true;
                 break;
-            case 'KeyA':
             case 'ArrowLeft':
                 this.keys.left = true;
                 break;
-            case 'KeyD':
             case 'ArrowRight':
                 this.keys.right = true;
                 break;
+
+            // WASD for camera control
+            case 'KeyW':
+                this.cameraKeys.up = true;
+                break;
+            case 'KeyS':
+                this.cameraKeys.down = true;
+                break;
+            case 'KeyA':
+                this.cameraKeys.left = true;
+                break;
+            case 'KeyD':
+                this.cameraKeys.right = true;
+                break;
+
+            // Other controls
             case 'Space':
                 this.keys.jump = true;
                 event.preventDefault();
@@ -64,6 +83,12 @@ export class Controls {
             case 'KeyE':
                 this.keys.interact = true;
                 break;
+            case 'KeyQ':
+                this.cameraKeys.zoomIn = true;
+                break;
+            case 'KeyR':
+                this.cameraKeys.zoomOut = true;
+                break;
             case 'Escape':
                 this.togglePause();
                 break;
@@ -72,22 +97,35 @@ export class Controls {
 
     onKeyUp(event) {
         switch (event.code) {
-            case 'KeyW':
+            // Arrow keys for character movement
             case 'ArrowUp':
                 this.keys.forward = false;
                 break;
-            case 'KeyS':
             case 'ArrowDown':
                 this.keys.backward = false;
                 break;
-            case 'KeyA':
             case 'ArrowLeft':
                 this.keys.left = false;
                 break;
-            case 'KeyD':
             case 'ArrowRight':
                 this.keys.right = false;
                 break;
+
+            // WASD for camera control
+            case 'KeyW':
+                this.cameraKeys.up = false;
+                break;
+            case 'KeyS':
+                this.cameraKeys.down = false;
+                break;
+            case 'KeyA':
+                this.cameraKeys.left = false;
+                break;
+            case 'KeyD':
+                this.cameraKeys.right = false;
+                break;
+
+            // Other controls
             case 'Space':
                 this.keys.jump = false;
                 break;
@@ -97,6 +135,12 @@ export class Controls {
                 break;
             case 'KeyE':
                 this.keys.interact = false;
+                break;
+            case 'KeyQ':
+                this.cameraKeys.zoomIn = false;
+                break;
+            case 'KeyR':
+                this.cameraKeys.zoomOut = false;
                 break;
         }
     }

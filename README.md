@@ -39,15 +39,29 @@ A cozy 3D third-person browser-based game set in a beautiful Nordic winter lands
 
 ## 🎯 Controls
 
+### Character Movement
 | Key | Action |
 |-----|--------|
-| **WASD** or **Arrow Keys** | Move elf |
-| **Mouse** | Control camera |
+| **Arrow Keys** | Move elf (Up/Down/Left/Right) |
 | **Spacebar** | Jump |
-| **E** | Interact (ride cat, eat porridge) |
 | **Shift** | Sprint (uses more energy) |
+| **E** | Interact (ride cat, eat porridge) |
+
+### Camera Controls
+| Key | Action |
+|-----|--------|
+| **W** | Tilt camera up |
+| **S** | Tilt camera down |
+| **A** | Rotate camera left |
+| **D** | Rotate camera right |
+| **Q** | Zoom in |
+| **R** | Zoom out |
+| **Mouse Wheel** | Alternative zoom |
+
+### Menu
+| Key | Action |
+|-----|--------|
 | **ESC** | Pause menu |
-| **Mouse Wheel** | Zoom camera in/out |
 
 ## 🚀 Getting Started
 

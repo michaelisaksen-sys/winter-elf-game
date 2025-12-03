@@ -159,7 +159,7 @@ class Game {
 
         // Update camera
         if (this.cameraController) {
-            this.cameraController.update(delta);
+            this.cameraController.update(delta, this.controls);
         }
 
         // Update physics
