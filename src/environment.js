@@ -424,28 +424,127 @@ export class Environment {
     }
 
     createMountain() {
-        const geometry = new THREE.ConeGeometry(15, 30, 6);
-        const material = new THREE.MeshStandardMaterial({
-            color: 0xe6e6e6,
+        const mountainGroup = new THREE.Group();
+
+        // Main peak (tallest, like Everest's summit)
+        const mainPeakGeometry = new THREE.ConeGeometry(12, 45, 4);
+        const rockMaterial = new THREE.MeshStandardMaterial({
+            color: 0x5a5a5a,
+            roughness: 1.0,
+            flatShading: true,
+        });
+
+        // Randomize vertices for jagged appearance
+        const positions = mainPeakGeometry.attributes.position;
+        for (let i = 0; i < positions.count; i++) {
+            const x = positions.getX(i);
+            const y = positions.getY(i);
+            const z = positions.getZ(i);
+
+            // Add random variations for jagged peaks
+            if (y > 10) { // Only affect upper portions
+                positions.setX(i, x + (Math.random() - 0.5) * 2);
+                positions.setZ(i, z + (Math.random() - 0.5) * 2);
+            }
+        }
+        mainPeakGeometry.computeVertexNormals();
+
+        const mainPeak = new THREE.Mesh(mainPeakGeometry, rockMaterial);
+        mainPeak.position.y = 22.5;
+        mainPeak.rotation.y = Math.PI / 4;
+        mainPeak.castShadow = true;
+        mountainGroup.add(mainPeak);
+
+        // Snow cap on main peak
+        const snowCapGeometry = new THREE.ConeGeometry(10, 18, 4);
+        const snowMaterial = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
             roughness: 0.9,
             flatShading: true,
         });
 
-        const mountain = new THREE.Mesh(geometry, material);
-        mountain.position.y = 15;
-        mountain.castShadow = true;
+        const snowCap = new THREE.Mesh(snowCapGeometry, snowMaterial);
+        snowCap.position.y = 36;
+        snowCap.rotation.y = Math.PI / 4;
+        snowCap.castShadow = true;
+        mountainGroup.add(snowCap);
 
-        // Add snow cap
-        const capGeometry = new THREE.ConeGeometry(12, 10, 6);
-        const capMaterial = new THREE.MeshStandardMaterial({
-            color: 0xffffff,
-            roughness: 0.9,
+        // Secondary peak (left side)
+        const secondPeakGeometry = new THREE.ConeGeometry(10, 35, 4);
+        const secondPeak = new THREE.Mesh(secondPeakGeometry, rockMaterial);
+        secondPeak.position.set(-8, 17.5, -5);
+        secondPeak.rotation.y = Math.PI / 6;
+        secondPeak.castShadow = true;
+        mountainGroup.add(secondPeak);
+
+        // Snow on secondary peak
+        const secondSnowGeometry = new THREE.ConeGeometry(8, 14, 4);
+        const secondSnow = new THREE.Mesh(secondSnowGeometry, snowMaterial);
+        secondSnow.position.set(-8, 28, -5);
+        secondSnow.rotation.y = Math.PI / 6;
+        mountainGroup.add(secondSnow);
+
+        // Tertiary peak (right side)
+        const thirdPeakGeometry = new THREE.ConeGeometry(9, 32, 4);
+        const thirdPeak = new THREE.Mesh(thirdPeakGeometry, rockMaterial);
+        thirdPeak.position.set(7, 16, -4);
+        thirdPeak.rotation.y = -Math.PI / 5;
+        thirdPeak.castShadow = true;
+        mountainGroup.add(thirdPeak);
+
+        // Snow on tertiary peak
+        const thirdSnowGeometry = new THREE.ConeGeometry(7.5, 12, 4);
+        const thirdSnow = new THREE.Mesh(thirdSnowGeometry, snowMaterial);
+        thirdSnow.position.set(7, 26, -4);
+        thirdSnow.rotation.y = -Math.PI / 5;
+        mountainGroup.add(thirdSnow);
+
+        // Rocky base (foothills)
+        const baseGeometry = new THREE.ConeGeometry(18, 15, 5);
+        const baseMaterial = new THREE.MeshStandardMaterial({
+            color: 0x4a4a4a,
+            roughness: 1.0,
+            flatShading: true,
         });
-        const cap = new THREE.Mesh(capGeometry, capMaterial);
-        cap.position.y = 20;
-        mountain.add(cap);
+        const base = new THREE.Mesh(baseGeometry, baseMaterial);
+        base.position.y = 7.5;
+        base.castShadow = true;
+        base.receiveShadow = true;
+        mountainGroup.add(base);
 
-        return mountain;
+        // Additional rocky ridges
+        for (let i = 0; i < 3; i++) {
+            const ridgeGeometry = new THREE.ConeGeometry(
+                5 + Math.random() * 3,
+                20 + Math.random() * 10,
+                4
+            );
+            const ridge = new THREE.Mesh(ridgeGeometry, rockMaterial);
+            ridge.position.set(
+                (Math.random() - 0.5) * 15,
+                10 + Math.random() * 5,
+                (Math.random() - 0.5) * 10
+            );
+            ridge.rotation.y = Math.random() * Math.PI;
+            ridge.castShadow = true;
+            mountainGroup.add(ridge);
+
+            // Small snow caps on ridges
+            if (Math.random() > 0.3) {
+                const ridgeSnowGeometry = new THREE.ConeGeometry(
+                    3 + Math.random() * 2,
+                    8 + Math.random() * 4,
+                    4
+                );
+                const ridgeSnow = new THREE.Mesh(ridgeSnowGeometry, snowMaterial);
+                ridgeSnow.position.copy(ridge.position);
+                ridgeSnow.position.y += 10;
+                ridgeSnow.rotation.copy(ridge.rotation);
+                mountainGroup.add(ridgeSnow);
+            }
+        }
+
+        return mountainGroup;
     }
 
     createPorridgeBowls() {
