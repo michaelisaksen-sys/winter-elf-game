@@ -7,6 +7,7 @@ export class EnergySystem {
         this.depletionRate = 0.5; // Energy lost per second (lasts ~3 minutes)
         this.sprintDepletionRate = 1.5; // Sprint depletion (lasts ~1 minute)
         this.porridgeRestoration = 50;
+        this.waffleRestoration = 70; // Waffles restore more energy!
 
         this.lastEatTime = 0;
         this.eatCooldown = 2000; // 2 seconds cooldown
@@ -51,6 +52,19 @@ export class EnergySystem {
         this.lastEatTime = now;
 
         console.log(`Ate porridge! Energy: ${this.energy}`);
+        return true;
+    }
+
+    eatWaffle() {
+        const now = Date.now();
+        if (now - this.lastEatTime < this.eatCooldown) {
+            return false;
+        }
+
+        this.energy = Math.min(this.maxEnergy, this.energy + this.waffleRestoration);
+        this.lastEatTime = now;
+
+        console.log(`Ate waffle! Energy: ${this.energy}`);
         return true;
     }
 

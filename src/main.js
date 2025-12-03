@@ -232,7 +232,28 @@ class Game {
             }
         }
 
-        if (!nearBowl && catDistance >= 3) {
+        // Check waffles
+        const waffles = this.environment.waffles || [];
+        let nearWaffle = false;
+
+        for (const waffle of waffles) {
+            const waffleDistance = this.character.position.distanceTo(waffle.position);
+            if (waffleDistance < 2.5) {
+                nearWaffle = true;
+                this.ui.showInteractionPrompt('Press E to eat waffle');
+
+                if (this.controls.keys.interact && !this.controls.interactCooldown) {
+                    this.energySystem.eatWaffle();
+                    this.character.playEatingAnimation();
+                    this.audio.playEatSound();
+                    this.controls.interactCooldown = true;
+                    setTimeout(() => this.controls.interactCooldown = false, 2000);
+                }
+                break;
+            }
+        }
+
+        if (!nearBowl && !nearWaffle && catDistance >= 3) {
             this.ui.hideInteractionPrompt();
         }
     }

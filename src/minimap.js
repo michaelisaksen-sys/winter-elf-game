@@ -59,6 +59,24 @@ export class Minimap {
             ctx.strokeRect(cabinX - 3, cabinY - 3, 6, 6);
         }
 
+        // Draw waffle hut
+        if (this.environment && this.environment.waffleHut) {
+            const hutX = offsetX + this.environment.waffleHut.position.x * this.scale;
+            const hutY = offsetY + this.environment.waffleHut.position.z * this.scale;
+
+            ctx.fillStyle = 'rgba(210, 105, 30, 0.8)';
+            ctx.fillRect(hutX - 3, hutY - 3, 6, 6);
+            ctx.strokeStyle = 'rgba(255, 204, 102, 0.8)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(hutX - 3, hutY - 3, 6, 6);
+
+            // Add waffle icon (small circle)
+            ctx.beginPath();
+            ctx.arc(hutX, hutY, 2, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(218, 165, 32, 0.9)';
+            ctx.fill();
+        }
+
         // Draw trees
         if (this.environment && this.environment.trees) {
             ctx.fillStyle = 'rgba(45, 80, 22, 0.6)';

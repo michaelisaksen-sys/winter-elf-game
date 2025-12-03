@@ -6,6 +6,8 @@ export class Environment {
         this.terrain = null;
         this.trees = [];
         this.cabin = null;
+        this.waffleHut = null;
+        this.waffles = [];
         this.lake = null;
         this.mountains = [];
         this.porridgeBowls = [];
@@ -17,6 +19,7 @@ export class Environment {
         this.createLake();
         this.createTrees();
         this.createCabin();
+        this.createWaffleHut();
         this.createMountains();
         this.createPorridgeBowls();
         this.createDecorations();
@@ -235,6 +238,170 @@ export class Environment {
         cabinGroup.position.set(-15, 0, 5);
         this.cabin = cabinGroup;
         this.scene.add(cabinGroup);
+    }
+
+    createWaffleHut() {
+        const hutGroup = new THREE.Group();
+
+        // Main hut body (smaller and cozier than cabin)
+        const hutGeometry = new THREE.BoxGeometry(4, 3, 4);
+        const hutMaterial = new THREE.MeshStandardMaterial({
+            color: 0xd2691e, // Warm brown
+            roughness: 0.9,
+        });
+        const hut = new THREE.Mesh(hutGeometry, hutMaterial);
+        hut.position.y = 1.5;
+        hut.castShadow = true;
+        hut.receiveShadow = true;
+        hutGroup.add(hut);
+
+        // Roof
+        const roofGeometry = new THREE.ConeGeometry(3.2, 2, 4);
+        const roofMaterial = new THREE.MeshStandardMaterial({
+            color: 0x8b4513,
+            roughness: 0.8,
+        });
+        const roof = new THREE.Mesh(roofGeometry, roofMaterial);
+        roof.position.y = 4;
+        roof.rotation.y = Math.PI / 4;
+        roof.castShadow = true;
+        hutGroup.add(roof);
+
+        // Snow on roof
+        const snowRoofGeometry = new THREE.ConeGeometry(3.3, 0.4, 4);
+        const snowMaterial = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            roughness: 0.9,
+        });
+        const snowRoof = new THREE.Mesh(snowRoofGeometry, snowMaterial);
+        snowRoof.position.y = 5;
+        snowRoof.rotation.y = Math.PI / 4;
+        hutGroup.add(snowRoof);
+
+        // Door
+        const doorGeometry = new THREE.BoxGeometry(1, 1.8, 0.2);
+        const doorMaterial = new THREE.MeshStandardMaterial({
+            color: 0x3d2817,
+        });
+        const door = new THREE.Mesh(doorGeometry, doorMaterial);
+        door.position.set(0, 0.9, 2.1);
+        hutGroup.add(door);
+
+        // Window with warm glow
+        const windowGeometry = new THREE.BoxGeometry(0.8, 0.8, 0.2);
+        const windowMaterial = new THREE.MeshStandardMaterial({
+            color: 0xffcc66,
+            emissive: 0xffcc66,
+            emissiveIntensity: 0.5,
+        });
+        const window = new THREE.Mesh(windowGeometry, windowMaterial);
+        window.position.set(-1.2, 1.8, 2.1);
+        hutGroup.add(window);
+
+        // Sign "Waffles"
+        const signGeometry = new THREE.BoxGeometry(1.2, 0.6, 0.1);
+        const signMaterial = new THREE.MeshStandardMaterial({
+            color: 0xffe4b5,
+            roughness: 0.7,
+        });
+        const sign = new THREE.Mesh(signGeometry, signMaterial);
+        sign.position.set(0, 2.8, 2.1);
+        hutGroup.add(sign);
+
+        // Chimney
+        const chimneyGeometry = new THREE.BoxGeometry(0.6, 1.5, 0.6);
+        const chimneyMaterial = new THREE.MeshStandardMaterial({
+            color: 0x8b0000,
+            roughness: 0.7,
+        });
+        const chimney = new THREE.Mesh(chimneyGeometry, chimneyMaterial);
+        chimney.position.set(1.2, 4.75, 0);
+        chimney.castShadow = true;
+        hutGroup.add(chimney);
+
+        // Smoke particles
+        const smokeGeometry = new THREE.SphereGeometry(0.25, 8, 8);
+        const smokeMaterial = new THREE.MeshBasicMaterial({
+            color: 0xe6e6e6,
+            transparent: true,
+            opacity: 0.5,
+        });
+        for (let i = 0; i < 4; i++) {
+            const smoke = new THREE.Mesh(smokeGeometry, smokeMaterial);
+            smoke.position.set(
+                1.2 + Math.random() * 0.3 - 0.15,
+                5.5 + i * 0.6,
+                Math.random() * 0.3 - 0.15
+            );
+            hutGroup.add(smoke);
+        }
+
+        // Counter/table with waffles
+        const counterGeometry = new THREE.BoxGeometry(2, 0.8, 1);
+        const counterMaterial = new THREE.MeshStandardMaterial({
+            color: 0xdeb887,
+            roughness: 0.8,
+        });
+        const counter = new THREE.Mesh(counterGeometry, counterMaterial);
+        counter.position.set(0, 0.4, 1.5);
+        counter.castShadow = true;
+        hutGroup.add(counter);
+
+        // Create waffles on counter
+        this.createWaffles(hutGroup, 0, 0.85, 1.5);
+
+        // Position the hut near the lake
+        hutGroup.position.set(15, 0, 20);
+        this.waffleHut = hutGroup;
+        this.scene.add(hutGroup);
+    }
+
+    createWaffles(parentGroup, x, y, z) {
+        // Create a stack of 3 waffles
+        for (let i = 0; i < 3; i++) {
+            const waffleGroup = new THREE.Group();
+
+            // Waffle base (golden brown)
+            const waffleGeometry = new THREE.CylinderGeometry(0.35, 0.35, 0.1, 8);
+            const waffleMaterial = new THREE.MeshStandardMaterial({
+                color: 0xdaa520,
+                roughness: 0.7,
+            });
+            const waffle = new THREE.Mesh(waffleGeometry, waffleMaterial);
+            waffleGroup.add(waffle);
+
+            // Grid pattern (darker squares)
+            for (let gx = -1; gx <= 1; gx++) {
+                for (let gz = -1; gz <= 1; gz++) {
+                    if ((gx + gz) % 2 === 0) {
+                        const gridGeometry = new THREE.BoxGeometry(0.15, 0.12, 0.15);
+                        const gridMaterial = new THREE.MeshStandardMaterial({
+                            color: 0xb8860b,
+                            roughness: 0.8,
+                        });
+                        const grid = new THREE.Mesh(gridGeometry, gridMaterial);
+                        grid.position.set(gx * 0.15, 0, gz * 0.15);
+                        waffleGroup.add(grid);
+                    }
+                }
+            }
+
+            waffleGroup.position.set(x + (i - 1) * 0.5, y + i * 0.12, z);
+            waffleGroup.castShadow = true;
+            parentGroup.add(waffleGroup);
+
+            // Store waffle position for interaction
+            const waffleWorldPos = new THREE.Vector3();
+            waffleWorldPos.set(
+                this.waffleHut ? 15 + x + (i - 1) * 0.5 : x + (i - 1) * 0.5,
+                y + i * 0.12,
+                this.waffleHut ? 20 + z : z
+            );
+            this.waffles.push({
+                mesh: waffleGroup,
+                position: waffleWorldPos
+            });
+        }
     }
 
     createMountains() {
