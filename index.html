@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winter Wonderland Elf Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Main Menu -->
+    <div id="main-menu" class="menu-overlay">
+        <div class="menu-content">
+            <h1>❄️ Winter Wonderland ❄️</h1>
+            <p class="subtitle">A Cozy Elf Adventure</p>
+            <button id="start-button" class="menu-button">Start Game</button>
+            <button id="controls-button" class="menu-button">Controls</button>
+        </div>
+    </div>
+
+    <!-- Controls Screen -->
+    <div id="controls-screen" class="menu-overlay" style="display: none;">
+        <div class="menu-content">
+            <h2>Controls</h2>
+            <div class="controls-list">
+                <div class="control-item">
+                    <span class="key">WASD / Arrow Keys</span>
+                    <span class="action">Move</span>
+                </div>
+                <div class="control-item">
+                    <span class="key">Mouse</span>
+                    <span class="action">Camera Control</span>
+                </div>
+                <div class="control-item">
+                    <span class="key">Spacebar</span>
+                    <span class="action">Jump</span>
+                </div>
+                <div class="control-item">
+                    <span class="key">E</span>
+                    <span class="action">Interact (Ride Cat / Eat Porridge)</span>
+                </div>
+                <div class="control-item">
+                    <span class="key">Shift</span>
+                    <span class="action">Sprint</span>
+                </div>
+                <div class="control-item">
+                    <span class="key">ESC</span>
+                    <span class="action">Pause Menu</span>
+                </div>
+            </div>
+            <button id="back-button" class="menu-button">Back</button>
+        </div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pause-menu" class="menu-overlay" style="display: none;">
+        <div class="menu-content">
+            <h2>Paused</h2>
+            <button id="resume-button" class="menu-button">Resume</button>
+            <button id="restart-button" class="menu-button">Restart</button>
+        </div>
+    </div>
+
+    <!-- Game HUD -->
+    <div id="game-hud" style="display: none;">
+        <!-- Energy Bar -->
+        <div id="energy-container">
+            <div class="hud-label">Energy</div>
+            <div id="energy-bar-bg">
+                <div id="energy-bar"></div>
+            </div>
+            <div id="energy-value">100%</div>
+        </div>
+
+        <!-- Interaction Prompt -->
+        <div id="interaction-prompt"></div>
+
+        <!-- Minimap (Optional) -->
+        <div id="minimap">
+            <div class="hud-label">Map</div>
+            <canvas id="minimap-canvas" width="150" height="150"></canvas>
+        </div>
+
+        <!-- Activity Indicator -->
+        <div id="activity-indicator"></div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <h2>Loading Winter Wonderland...</h2>
+            <div class="loading-bar">
+                <div id="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
