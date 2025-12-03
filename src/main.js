@@ -11,6 +11,7 @@ import { EnergySystem } from './energy.js';
 import { UI } from './ui.js';
 import { ParticleSystem } from './particles.js';
 import { AudioManager } from './audio.js';
+import { Minimap } from './minimap.js';
 
 class Game {
     constructor() {
@@ -34,6 +35,7 @@ class Game {
         this.skatingSystem = null;
         this.energySystem = null;
         this.particleSystem = null;
+        this.minimap = null;
 
         // Bind methods
         this.animate = this.animate.bind(this);
@@ -67,6 +69,7 @@ class Game {
             this.skatingSystem = new SkatingSystem(this.character, this.environment);
             this.energySystem = new EnergySystem(this.character);
             this.particleSystem = new ParticleSystem(this.sceneManager.scene);
+            this.minimap = new Minimap(this.character, this.cat, this.environment);
 
             // Add objects to physics system
             this.physics.addCharacter(this.character);
@@ -182,6 +185,11 @@ class Game {
 
         // Update UI
         this.ui.update();
+
+        // Update minimap
+        if (this.minimap) {
+            this.minimap.update();
+        }
     }
 
     checkInteractions() {
